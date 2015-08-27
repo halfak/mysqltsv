@@ -15,7 +15,7 @@ def requirements(fname):
 
 setup(
     name='mysqltsv',
-    version="0.0.4",
+    version="0.0.5",
     author='Aaron Halfaker',
     author_email='aaron.halfaker@gmail.com',
     packages=find_packages(),

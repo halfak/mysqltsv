@@ -43,6 +43,25 @@ def test_none_string():
     eq_(row.values(), ["value41", None, 43])
 
 
+def test_no_headers():
+    f = io.StringIO(
+        "value11\tvalue12\t13\n" +
+        "value21\tvalue22\t23\n"
+    )
+
+    reader = Reader(f, types=[str, str, int], headers=False)
+    eq_(reader.headers, None)
+
+    row = next(reader)
+    eq_(row[0], "value11")
+    eq_(row[1], "value12")
+    eq_(row[2], 13)
+
+    row = next(reader)
+    eq_(row[0], "value21")
+    eq_(row[1], "value22")
+    eq_(row[2], 23)
+
 
 @raises(RowReadingError)
 def test_read_error():

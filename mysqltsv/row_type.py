@@ -75,15 +75,16 @@ class AbstractRowType:
 
 
 def generate_row_type(headers, types=None, none_string="NULL"):
-    headers = list(headers) if headers is not None else None
 
-    if types is not None:
-        assert len(types) == len(headers), \
-            "Length of types {0} must match headers {1}".format(len(types),
-                                                                headers)
+    if headers is not None:
+        headers = dict((h, i) for i, h in enumerate(headers))
+        if types is not None:
+            assert len(types) == len(headers), \
+                "Length of types {0} must match headers {1}".format(len(types),
+                                                                    headers)
 
     class _RowType(AbstractRowType):
-        _headers = dict((h, i) for i, h in enumerate(headers))
+        _headers = headers
         _types = types
         _none_string = none_string
 

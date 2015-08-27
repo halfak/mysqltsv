@@ -2,12 +2,13 @@ import logging
 
 from .util import read_row
 
-logger = logging.getLogger("mysqltsv.row_type")
+logger = logging.getLogger(__name__)
 
 class AbstractRowType:
 
     def __init__(self, line):
-        values = list(read_row(line, types=self._types))
+        values = list(read_row(line, types=self._types,
+                               none_string=self._none_string))
         if self._headers and len(values) != len(self._headers):
             raise ValueError("Expected {0} values and got {1}."\
                              .format(len(self._headers), len(values)))
@@ -73,7 +74,7 @@ class AbstractRowType:
             return False
 
 
-def generate_row_type(headers, types=None):
+def generate_row_type(headers, types=None, none_string="NULL"):
     headers = list(headers) if headers is not None else None
 
     if types is not None:
@@ -84,5 +85,6 @@ def generate_row_type(headers, types=None):
     class _RowType(AbstractRowType):
         _headers = dict((h, i) for i, h in enumerate(headers))
         _types = types
+        _none_string = none_string
 
     return _RowType

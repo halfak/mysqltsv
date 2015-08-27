@@ -1,6 +1,6 @@
 import logging
 
-logger = logging.getLogger("mysqltsv.util")
+logger = logging.getLogger(__name__)
 
 def encode(val, none_string="NULL"):
     if val == None:

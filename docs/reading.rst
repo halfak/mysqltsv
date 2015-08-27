@@ -1,0 +1,4 @@
+Reading
+=======
+
+.. automodule:: mysqltsv.reader

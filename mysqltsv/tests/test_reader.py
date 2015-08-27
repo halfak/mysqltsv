@@ -17,17 +17,32 @@ def test_reader():
     reader = Reader(f, types=[str, str, int])
     eq_(reader.headers, ["header1", "header2", "header3"])
 
-    row = reader.next()
+    row = next(reader)
     eq_(row.values(), ["value11", "value12", 13])
 
-    row = reader.next()
+    row = next(reader)
     eq_(row.values(), ["value21", "value22", 23])
 
-    row = reader.next()
+    row = next(reader)
     eq_(row.values(), ["value31", "value32", 33])
 
-    row = reader.next()
+    row = next(reader)
     eq_(row.values(), ["value41", None, 43])
+
+
+def test_none_string():
+    f = io.StringIO(
+        "header1\theader2\theader3\n" +
+        "value41\t\\N\t43\n"
+    )
+
+    reader = Reader(f, types=[str, str, int], none_string="\\N")
+    eq_(reader.headers, ["header1", "header2", "header3"])
+
+    row = next(reader)
+    eq_(row.values(), ["value41", None, 43])
+
+
 
 @raises(RowReadingError)
 def test_read_error():

@@ -8,6 +8,7 @@ This module provides a set of utilities for reading TSV files.
 
 """
 
+import io
 import logging
 
 from .errors import RowReadingError
@@ -46,6 +47,7 @@ class Reader:
     """
     def __init__(self, f, headers=True, types=None, none_string="NULL",
                           error_handler=raise_exception):
+
         self.f = f
 
         if headers == True:

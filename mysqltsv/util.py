@@ -23,7 +23,7 @@ def decode(val, type=str, none_string="NULL"):
     return type(val.replace("\\t", "\t").replace("\\n", "\n"))
 
 def read_row(line, *args, types=None, **kwargs):
-    raw_values = line.strip("\n").split("\t")
+    raw_values = line.strip("\r\n").split("\t")
 
     if types is None:
         return (decode(rv, *args, **kwargs) for rv in raw_values)

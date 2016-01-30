@@ -7,12 +7,10 @@ This module provides a set of utilities for reading TSV files.
 .. autofunction:: mysqltsv.functions.read
 
 """
-
-import io
 import logging
 
 from .errors import RowReadingError
-from .row_type import generate_row_type
+from .row_type import RowGenerator
 from .util import read_row
 
 logger = logging.getLogger(__name__)
@@ -32,8 +30,8 @@ class Reader:
             A file pointer
         headers : `bool` | `list`(`str`)
             If True, read the first row of the file as a set of headers.  If a
-            list of `str` is provided, use those strings as headers.  Otherwise,
-            assume no headers.
+            list of `str` is provided, use those strings as headers.
+            Otherwise, assume no headers.
         types : `list`( `callable` )
             A list of `callable` to apply to the row values.  If none is
             provided, all values will be read as `str`
@@ -46,7 +44,7 @@ class Reader:
             to throw a :class:`mysqltsv.errors.RowReadingError`
     """
     def __init__(self, f, headers=True, types=None, none_string="NULL",
-                          error_handler=raise_exception):
+                 error_handler=raise_exception):
 
         self.f = f
 
@@ -57,8 +55,8 @@ class Reader:
         else:
             headers = None
 
-        self.row_type = generate_row_type(headers, types=types,
-                                          none_string=none_string)
+        self.row_type = RowGenerator(headers, types=types,
+                                     none_string=none_string)
 
         self.headers = headers
         """

@@ -48,4 +48,4 @@ from .reader import Reader
 from .util import encode, decode, read_row, write_row
 from .writer import Writer
 
-__version__ = "0.0.6"
+__version__ = "0.0.7"
